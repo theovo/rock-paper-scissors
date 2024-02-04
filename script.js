@@ -1,141 +1,140 @@
-// function getComputerChoice(min, max) {
+function playGame(e) {
 
-//     min = Math.ceil(min); // makes min inclusive
-//     max = Math.floor(max); // makes max inclusive
-//     let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+    function getUserChoice() {
 
-//     let a = "rock";
-//     let b = "paper";
-//     let c = "scissors";
+        let buttonChoice = e.target.id;
 
-//     if (randomInt === 1) {
-//         return a;
-//     } else if (randomInt === 2) {
-//         return b;
-//     } else {
-//         return c;
-//     };
+        switch (buttonChoice) {
+            case "rock":
+                buttonChoice = 1;
+                break;
+            case "paper":
+                buttonChoice = 2;
+                break;
+            case "scissors":
+                buttonChoice = 3;
+                break;
+        }
 
-// }
+        console.log('User Choice ' + buttonChoice);
+        console.log('Button Choice ' + e.target.id);
+        return buttonChoice;
 
-// let computerSelection = (getComputerChoice(1,3));
-// console.log(computerSelection);
-
-function getComputerChoice(min, max) {
-    min = Math.ceil(min); // makes min inclusive
-    max = Math.floor(max); // makes max inclusive
-    randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
-    return randomInt;
-}
-
-function getUserChoice() {
-    let userInput = prompt(
-        "Choose one of the following: rock paper scissors",
-        ""
-    );
-    // console.log(userInput);
-
-    userInput = userInput.toLowerCase();
-    // console.log(userInput);
-
-    if (userInput === "rock") {
-        return (userInput = 1);
-    } else if (userInput === "paper") {
-        return (userInput = 2);
-    } else if (userInput === "scissors") {
-        return (userInput = 3);
-    } else {
-        return (userInput = null);
     }
-}
 
-function game() {
-    // compare the selections
-    function playRound(playerSelection, computerSelection) {
-        // convert to strings
-        if (computerSelection === 1) {
-            computerSelectionAsString = "Rock";
-        } else if (computerSelection === 2) {
-            computerSelectionAsString = "Paper";
-        } else {
-            computerSelectionAsString = "Scissors";
+    function getComputerChoice(min, max) {
+
+        min = Math.ceil(min); // include min in the range
+        max = Math.floor(max); // include max in the range
+        let randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        console.log('Computer Choice ' + randomInt);
+        return randomInt;
+
+    }
+
+    function makeRockBeatScissors() {
+
+        let sum = userChoice + computerChoice;
+        console.log('Sum ' + sum);
+
+        if (sum === 4) {
+            if (userChoice === 1) {
+                userChoice += computerChoice;
+                console.log('Updated User Choice ' + userChoice);
+                return userChoice;
+                // return (userChoice += computerChoice);
+            } else if (computerChoice === 1) {
+                computerChoice += userChoice;
+                console.log('Updated Computer Choice ' + computerChoice);
+                return computerChoice;
+                // return (computerChoice += userChoice);
+            }
         }
 
-        // convert to strings
-        if (playerSelection === 1) {
-            playerSelectionAsString = "Rock";
-        } else if (playerSelection === 2) {
-            playerSelectionAsString = "Paper";
-        } else if (playerSelection === 3) {
-            playerSelectionAsString = "Scissors";
+    }
+
+    function getRoundWinner() {
+
+        function convertUserChoiceToStrings() {
+
+            if ((userChoice === 1) || (userChoice === 4)) {
+                return "Rock";
+            } else if (userChoice === 2) {
+                return "Paper";
+            } else if (userChoice === 3) {
+                return "Scissors";
+            }
+
         }
 
-        // compare the selections, alert the results, return the winner of the round
-        if (playerSelection === computerSelection || playerSelection === null) {
+        function convertComputerChoiceToStrings() {
+
+            if ((computerChoice === 1) || (computerChoice === 4)) {
+                return "Rock";
+            } else if (computerChoice === 2) {
+                return "Paper";
+            } else {
+                return "Scissors";
+            }
+
+        }
+
+        let userChoiceAsStrings = convertUserChoiceToStrings();
+        let computerChoiceAsStrings = convertComputerChoiceToStrings();
+
+        if (userChoice === computerChoice) {
             alert("Try Again!");
-            computerSelection = getComputerChoice(1, 3);
-            playerSelection = getUserChoice();
-            console.log(playRound(playerSelection, computerSelection));
-        } else if (playerSelection < computerSelection) {
-            currentRound = currentRound + 1;
-            computerScore = computerScore + 1;
+        } else if (userChoice < computerChoice) {
+            currentRound += 1;
+            computerScore += 1;
+
             alert(
-                `You Lose! ${playerSelectionAsString} loses to ${computerSelectionAsString}!`
+                `You Lose! ${userChoiceAsStrings} loses to ${computerChoiceAsStrings}!`
             );
-            return `Round ${currentRound} | Player Score ${playerScore} | Computer Score ${computerScore}`;
+
+            let divScores = document.querySelector('#divScores');
+            divScores.textContent = `Round ${currentRound} | User Score ${userScore} | Computer Score ${computerScore}`;
+
         } else {
-            currentRound = currentRound + 1;
-            playerScore = playerScore + 1;
+            currentRound += 1;
+            userScore += 1;
+
             alert(
-                `You Win! ${playerSelectionAsString} beats ${computerSelectionAsString}!`
+                `You Win! ${userChoiceAsStrings} beats ${computerChoiceAsStrings}!`
             );
-            return `Round ${currentRound} | Player Score ${playerScore} | Computer Score ${computerScore}`;
+
+            let divScores = document.querySelector('#divScores');
+            divScores.textContent = `Round ${currentRound} | User Score ${userScore} | Computer Score ${computerScore}`;
         }
+
     }
 
-    // calculate the winner
-    function calculateWinner() {
-        if (playerScore < computerScore) {
-            alert("You're the Loser. Game Over!");
-            return "Computer";
-        } else {
-            alert("You're the Winner. Game Over!");
-            return "Player";
+    function getGameWinner() {
+
+        if (currentRound === 5) {
+            if (userScore < computerScore) {
+                alert("Sorry, You've Lost the Game!");
+            } else { "Congratulations, You've Won the Game!" };
+            userScore = 0;
+            computerScore = 0;
+            currentRound = 0;
         }
+
     }
 
-    // declare variables
-    let currentRound = 0;
-    let playerScore = 0;
-    let computerScore = 0;
+    let userChoice = getUserChoice(e);
+    let computerChoice = getComputerChoice(1, 3);
+    makeRockBeatScissors(userChoice, computerChoice);
+    getRoundWinner(userChoice, computerChoice);
+    getGameWinner(userScore, computerScore);
 
-    // round 1
-    let playerSelection = getUserChoice();
-    let computerSelection = getComputerChoice(1, 3);
-    console.log(playRound(playerSelection, computerSelection));
-
-    // round 2
-    playerSelection = getUserChoice();
-    computerSelection = getComputerChoice(1, 3);
-    console.log(playRound(playerSelection, computerSelection));
-
-    // round 3
-    playerSelection = getUserChoice();
-    computerSelection = getComputerChoice(1, 3);
-    console.log(playRound(playerSelection, computerSelection));
-
-    // round 4
-    playerSelection = getUserChoice();
-    computerSelection = getComputerChoice(1, 3);
-    console.log(playRound(playerSelection, computerSelection));
-
-    // round 5
-    playerSelection = getUserChoice();
-    computerSelection = getComputerChoice(1, 3);
-    console.log(playRound(playerSelection, computerSelection));
-
-    let gameWinner = calculateWinner();
-    return `Winner is ${gameWinner}`;
 }
 
-console.log(game());
+let userScore = 0;
+let computerScore = 0;
+let currentRound = 0;
+
+const divButtons = document.querySelector('#divButtons');
+divButtons.addEventListener('click', playGame);
+
