@@ -116,6 +116,10 @@ function playGame(e) {
             if (userScore < computerScore) {
                 alert("Sorry, You've Lost the Game!");
             } else { "Congratulations, You've Won the Game!" };
+
+            let divScores = document.querySelector('#divScores');
+            divScores.textContent = `Round ${currentRound} | User Score ${userScore} | Computer Score ${computerScore}`;
+
             userScore = 0;
             computerScore = 0;
             currentRound = 0;
